@@ -3,13 +3,15 @@ from django.http import JsonResponse
 from .apps import PimaConfig
 # Create your views here.
 from rest_framework.views import APIView
+from rest_framework.permissions import IsAuthenticated  # This is used for token authentication
+
 from .models import Patient
 
 
 class Callmodel(APIView):
+	permission_classes = (IsAuthenticated,)
 
 	def get(self, request):
-
 		if request.method == 'GET':
 			name = request.GET.get('name')
 			assert isinstance(name, str)
@@ -34,8 +36,9 @@ class Callmodel(APIView):
 				return JsonResponse({"result": 'The patient probably doesnt have diabetes'})
 
 class Requestdb(APIView):
-
+	permission_classes = (IsAuthenticated,)
 	def get(self, request):
+
 		if request.method == 'GET':
 
 			_id = request.GET.get('id')
